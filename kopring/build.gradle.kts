@@ -26,11 +26,25 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.projectlombok:lombok")
+
+	//aop
+	implementation("org.springframework.boot:spring-boot-starter-aop")
+
+	//validated
+	implementation("org.springframework.boot:spring-boot-starter-validation")
+
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+
+	//kotest
 	testImplementation("io.kotest:kotest-runner-junit5:5.4.2")
 	testImplementation("io.kotest:kotest-assertions-core:5.4.2")
 	testImplementation("io.kotest.extensions:kotest-extensions-spring:1.1.2")
+
+	//mockito
+	testImplementation("org.mockito:mockito-core:5.8.0")
+
+	//mokK
 	testImplementation("io.mockk:mockk:1.13.8")
 	runtimeOnly("com.mysql:mysql-connector-j")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")

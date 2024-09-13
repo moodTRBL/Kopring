@@ -21,7 +21,6 @@ class CommentRepositoryTest @Autowired constructor(
     private val boardRepository: BoardRepository,
     private val entityManager: EntityManager,
 ) : BehaviorSpec({
-    //extensions(SpringTestExtension(SpringTestLifecycleMode.Root))
     extensions(SpringExtension)
 
     beforeTest {

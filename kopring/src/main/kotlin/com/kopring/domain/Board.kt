@@ -1,13 +1,14 @@
 package com.kopring.domain
 
+import com.kopring.dto.request.BoardWriteRequest
 import jakarta.persistence.*
 import org.springframework.data.domain.Auditable
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
 
 @Entity
 class Board(
-    val title: String,
-    val content: String
+    var title: String,
+    var content: String
 ) : BaseEntity() {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null
@@ -16,4 +17,13 @@ class Board(
 
     @OneToMany(mappedBy = "board", cascade = [(CascadeType.ALL)], orphanRemoval = true, fetch = FetchType.LAZY)
     var comments: MutableList<Comment> = mutableListOf()
+
+    companion object {
+        fun of(request: BoardWriteRequest): Board {
+            return Board(
+                title = request.title,
+                content = request.content
+            )
+        }
+    }
 }
