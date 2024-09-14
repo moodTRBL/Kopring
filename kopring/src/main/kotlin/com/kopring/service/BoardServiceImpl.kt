@@ -9,6 +9,7 @@ import com.kopring.repository.BoardRepository
 import jakarta.transaction.Transactional
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.web.multipart.MultipartFile
 import java.io.File
 import java.util.*
 
@@ -20,9 +21,11 @@ abstract class BoardServiceImpl @Autowired constructor(
 ) : BoardService {
 
     override fun writeBoard(
-        request: BoardWriteRequest
+        request: BoardWriteRequest,
+        file: MultipartFile
     ): BoardWriteResponse {
         val board: Board = Board.of(request)
+        fileUploadService.saveFile(file, board)
         return BoardWriteResponse.from(boardRepository.save(board))
     }
 
