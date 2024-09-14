@@ -15,7 +15,7 @@ import java.util.*
 
 @Transactional
 @Service
-abstract class BoardServiceImpl @Autowired constructor(
+class BoardServiceImpl @Autowired constructor(
     val boardRepository: BoardRepository,
     val fileUploadService: FileUploadService
 ) : BoardService {

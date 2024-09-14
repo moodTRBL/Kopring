@@ -10,7 +10,7 @@ class BoardImage(
 
     @ManyToOne(fetch = FetchType.LAZY)
     val board: Board
-) {
+) : BaseEntity() {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null
 }

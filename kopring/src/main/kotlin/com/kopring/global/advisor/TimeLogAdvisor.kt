@@ -17,7 +17,7 @@ class TimeLogAdvisor {
 
     companion object : LoggerCreator()
 
-    @Pointcut("execution(* metodName(..))")
+    @Pointcut("execution(* methodName(..))")
     fun pointCut() {}
 
     @Around("pointCut()")
