@@ -9,11 +9,14 @@ import com.kopring.repository.BoardRepository
 import jakarta.transaction.Transactional
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.io.File
+import java.util.*
 
 @Transactional
 @Service
-class BoardServiceImpl @Autowired constructor(
-    val boardRepository: BoardRepository
+abstract class BoardServiceImpl @Autowired constructor(
+    val boardRepository: BoardRepository,
+    val fileUploadService: FileUploadService
 ) : BoardService {
 
     override fun writeBoard(
@@ -27,8 +30,8 @@ class BoardServiceImpl @Autowired constructor(
         request: BoardEditRequest
     ): BoardEditResponse {
         var board: Board = boardRepository.findById(request.boardId).orElseThrow();
-        if(request.title != null) board.title = request.title
-        if(request.content != null) board.content = request.content
+        board.title = request.title
+        board.content = request.content
         return BoardEditResponse.from(board)
     }
 }

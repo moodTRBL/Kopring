@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestPart
+import org.springframework.web.multipart.MultipartFile
 
 @RequestMapping("/api/board")
 @Controller
@@ -22,7 +24,8 @@ class BoardController @Autowired constructor(
 ) {
     @PostMapping("/write")
     fun writeBoard(
-        @RequestBody reqeuest: BoardWriteRequest
+        @RequestBody reqeuest: BoardWriteRequest,
+        @RequestPart file: MultipartFile?
     ): ResponseEntity<BoardWriteResponse> {
         val response = boardService.writeBoard(reqeuest)
         return ResponseEntity.ok(response)
