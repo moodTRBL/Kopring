@@ -8,6 +8,6 @@ import com.kopring.dto.response.BoardWriteResponse
 import org.springframework.web.multipart.MultipartFile
 
 interface BoardService {
-    fun writeBoard(request: BoardWriteRequest, file: MultipartFile): BoardWriteResponse
+    fun writeBoard(request: BoardWriteRequest): BoardWriteResponse
     fun editBoard(request: BoardEditRequest): BoardEditResponse
 }

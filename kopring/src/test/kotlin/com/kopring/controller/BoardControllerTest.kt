@@ -14,5 +14,6 @@ class BoardControllerTest : BehaviorSpec({
         clearAllMocks()
     }
 
-
+    TODO("BoardEditRequest 유효성 검사 테스트")
+    TODO("BoardWriteRequest 파일 업로드 테스트")
 })

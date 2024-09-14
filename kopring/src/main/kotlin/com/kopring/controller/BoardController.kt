@@ -6,10 +6,12 @@ import com.kopring.dto.response.BoardEditResponse
 import com.kopring.dto.response.BoardWriteResponse
 import com.kopring.service.BoardService
 import jakarta.validation.Valid
+import org.hibernate.annotations.Parameter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.validation.annotation.Validated
+import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -20,14 +22,13 @@ import org.springframework.web.multipart.MultipartFile
 @RequestMapping("/api/board")
 @Controller
 class BoardController @Autowired constructor(
-    val boardService: BoardService
+    private val boardService: BoardService
 ) {
     @PostMapping("/write")
     fun writeBoard(
-        @RequestBody reqeuest: BoardWriteRequest,
-        @RequestPart file: MultipartFile
+        @ModelAttribute reqeuest: BoardWriteRequest
     ): ResponseEntity<BoardWriteResponse> {
-        val response = boardService.writeBoard(reqeuest, file)
+        val response = boardService.writeBoard(reqeuest)
         return ResponseEntity.ok(response)
     }
 

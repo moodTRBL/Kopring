@@ -12,8 +12,8 @@ import java.util.*
 
 @Component
 class DBFileUploadService @Autowired constructor(
-    val applicationProperties: ApplicationProperties,
-    val boardImageRepository: BoardImageRepository
+    private val applicationProperties: ApplicationProperties,
+    private val boardImageRepository: BoardImageRepository
 ) : FileUploadService{
 
     override fun saveFile(

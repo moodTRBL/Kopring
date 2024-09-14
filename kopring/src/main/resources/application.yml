@@ -1,6 +1,6 @@
 spring:
   upload:
-    path: \Users\sunwoo\IdeaProjects\Kopring\file-save\
+    path: C:\Users\hachi\IdeaProjects\file-save\
   jpa:
     hibernate:
       ddl-auto: create

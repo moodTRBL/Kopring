@@ -16,16 +16,15 @@ import java.util.*
 @Transactional
 @Service
 class BoardServiceImpl @Autowired constructor(
-    val boardRepository: BoardRepository,
-    val fileUploadService: FileUploadService
+    private val boardRepository: BoardRepository,
+    private val fileUploadService: FileUploadService
 ) : BoardService {
 
     override fun writeBoard(
-        request: BoardWriteRequest,
-        file: MultipartFile
+        request: BoardWriteRequest
     ): BoardWriteResponse {
         val board: Board = Board.of(request)
-        fileUploadService.saveFile(file, board)
+        fileUploadService.saveFile(request.file, board)
         return BoardWriteResponse.from(boardRepository.save(board))
     }
 
