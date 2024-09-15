@@ -18,6 +18,9 @@ class Board(
     @OneToMany(mappedBy = "board", cascade = [(CascadeType.ALL)], orphanRemoval = true, fetch = FetchType.LAZY)
     var comments: MutableList<Comment> = mutableListOf()
 
+    @OneToMany(mappedBy = "board", cascade = [(CascadeType.ALL)], orphanRemoval = true, fetch = FetchType.LAZY)
+    var boardImages: MutableList<BoardImage> = mutableListOf()
+
     companion object {
         fun of(request: BoardWriteRequest): Board {
             return Board(

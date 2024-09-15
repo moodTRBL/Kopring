@@ -17,15 +17,17 @@ class DBFileUploadService @Autowired constructor(
 ) : FileUploadService{
 
     override fun saveFile(
-        file: MultipartFile,
+        files: List<MultipartFile>,
         board: Board
     ) {
-        val originFileName: String? = file.originalFilename
-        val saveFileName = createSaveFileName(originFileName)
-        val filePath = getFilePath(saveFileName)
-        file.transferTo(File(filePath))
-        val boardImage: BoardImage = BoardImage(originFileName, saveFileName, board)
-        boardImageRepository.save(boardImage)
+        for (file in files) {
+            val originFileName: String? = file.originalFilename
+            val saveFileName = createSaveFileName(originFileName)
+            val filePath = getFilePath(saveFileName)
+            file.transferTo(File(filePath))
+            val boardImage: BoardImage = BoardImage(originFileName, saveFileName, board)
+            boardImageRepository.save(boardImage)
+        }
     }
 
     private fun createSaveFileName(fileName: String?): String {

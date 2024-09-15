@@ -1,5 +1,6 @@
 package com.kopring.domain
 
+import com.kopring.dto.request.BoardWriteRequest
 import jakarta.persistence.*
 
 @Entity
@@ -13,4 +14,8 @@ class BoardImage(
 ) : BaseEntity() {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null
+
+    init {
+        board.boardImages.add(this)
+    }
 }
