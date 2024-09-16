@@ -7,17 +7,21 @@ import com.kopring.dto.response.BoardEditResponse
 import com.kopring.dto.response.BoardWriteResponse
 import com.kopring.repository.BoardRepository
 import io.kotest.core.spec.style.BehaviorSpec
+import io.kotest.matchers.ints.exactly
 import io.kotest.matchers.shouldBe
 import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import org.springframework.http.HttpStatus
+import org.springframework.mock.web.MockMultipartFile
+import java.nio.charset.StandardCharsets
 import java.util.*
 
 class BoardServiceImplTest : BehaviorSpec({
     val boardRepository: BoardRepository = mockk<BoardRepository>()
-    val boardService: BoardService = BoardServiceImpl(boardRepository)
+    val fileUploadService: FileUploadService = mockk<FileUploadService>()
+    val boardService: BoardService = BoardServiceImpl(boardRepository,fileUploadService)
 
     //Given이 수행되고 목을 초기화한다
     afterSpec {
@@ -26,11 +30,15 @@ class BoardServiceImplTest : BehaviorSpec({
 
     Given("Board엔티티를 write하는 service가 존재한다") {
         every { boardRepository.save(any()) } returns Board("title", "content")
+        every { fileUploadService.saveFile(any(),any()) } returns Unit
         When("write를 호출한다") {
-            val request = BoardWriteRequest(title = "title", content = "content")
+            val request = BoardWriteRequest(title = "title", content = "content", listOf())
             val result: BoardWriteResponse = boardService.writeBoard(request)
             Then("boardRepository가 save()를 호출한다") {
                 verify(exactly = 1) { boardRepository.save(any()) }
+            }
+            Then("fileUploadService가 saveFile()을 호출한다") {
+                verify(exactly = 1) { fileUploadService.saveFile(any(),any()) }
             }
             Then("response가 반환된다") {
                 result.title shouldBe request.title

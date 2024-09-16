@@ -28,6 +28,9 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.projectlombok:lombok")
 
+	//gson
+	implementation("com.google.code.gson:gson:2.9.0")
+
 	//aop
 	implementation("org.springframework.boot:spring-boot-starter-aop")
 
