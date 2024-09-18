@@ -1,9 +1,12 @@
+import org.springframework.boot.gradle.tasks.bundling.BootJar
+
 plugins {
 	kotlin("jvm") version "1.9.25"
 	kotlin("plugin.spring") version "1.9.25"
 	kotlin("plugin.jpa") version "1.8.22"
 	id("org.springframework.boot") version "3.3.3"
 	id("io.spring.dependency-management") version "1.1.6"
+	id("org.jetbrains.kotlin.plugin.noarg") version "1.7.22"
 }
 
 group = "com"
@@ -27,6 +30,8 @@ dependencies {
 	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.projectlombok:lombok")
+	runtimeOnly("com.mysql:mysql-connector-j")
+	runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
 
 	//gson
 	implementation("com.google.code.gson:gson:2.9.0")
@@ -50,8 +55,15 @@ dependencies {
 
 	//mokK
 	testImplementation("io.mockk:mockk:1.13.8")
-	runtimeOnly("com.mysql:mysql-connector-j")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+	// webMvcTest
+	testImplementation("org.springframework.boot:spring-boot-starter-test") {
+		exclude(module = "mockito-core")
+	}
+	testImplementation("org.junit.jupiter:junit-jupiter-api")
+	testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+	testImplementation("com.ninja-squad:springmockk:4.0.2")
 }
 
 allOpen {
@@ -68,4 +80,12 @@ kotlin {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+tasks.getByName<BootJar>("bootJar") {
+	enabled = false
+}
+
+tasks.getByName<Jar>("jar") {
+	enabled = true
 }

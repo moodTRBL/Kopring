@@ -46,7 +46,7 @@ class BoardRepositoryTest @Autowired constructor(
                 }
 
                 Then("없는 Board를 찾아 예외를 던진다") {
-                    shouldThrow<NoSuchElementException> { boardRepository.findById((i+1)*1L).get() }
+                    shouldThrow<NoSuchElementException> { boardRepository.findById((130)*1L).get() }
                 }
             }
 

@@ -4,6 +4,8 @@ import com.google.gson.Gson
 import com.kopring.dto.request.BoardWriteRequest
 import com.kopring.dto.response.BoardWriteResponse
 import com.kopring.service.BoardService
+import com.kopring.service.BoardServiceImpl
+import com.ninjasquad.springmockk.MockkBean
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.ints.exactly
 import io.kotest.matchers.shouldBe
@@ -17,6 +19,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
@@ -24,35 +27,65 @@ import org.springframework.test.web.servlet.post
 import java.time.LocalDateTime
 
 //@SpringBootTest
+@MockBean(JpaMetamodelMappingContext::class)
 @WebMvcTest(controllers = [BoardController::class])
-class BoardControllerTest @Autowired constructor(
+class BoardControllerTest(
+    @Autowired
     val mockMvc: MockMvc,
-    @MockBean
+    @MockkBean
     val boardService: BoardService
-) : BehaviorSpec({
+) : BehaviorSpec() {
 
-    afterSpec {
-        clearAllMocks()
-    }
+    init {
+        afterSpec {
+            clearAllMocks()
+        }
 
-    Given("boardController가 존재한다.") {
-        every { boardService.writeBoard(any()) } returns BoardWriteResponse("title", HttpStatus.OK, LocalDateTime.now())
-        When("{/api/board/write}로 POST요청을 보낸다") {
-            Then("boardService가 saveBoard()를 호출한다") {
-                verify(exactly = 1) { boardService.writeBoard(any()) }
-            }
+        Given("boardController가 존재한다.") {
+            every { boardService.writeBoard(any()) } returns BoardWriteResponse("title", HttpStatus.OK, LocalDateTime.now())
+            When("{/api/board/write}로 POST요청을 보낸다") {
+                val boardWriteRequest = BoardWriteRequest("title", "content", listOf())
+                val result = mockMvc.post("/api/board/write") {
+                    //content = boardWriteRequest
+                    param("title", "title")
+                    param("content", "content")
+                    param("files", "files")
+                }
+                Then("boardService가 saveBoard()를 호출한다") {
+                    verify(exactly = 1) { boardService.writeBoard(any()) }
+                }
 
-            val boardWriteRequest = BoardWriteRequest("title", "content", listOf())
-            val result = mockMvc.post("/api/board/write") {
-                content = boardWriteRequest
-            }
-            Then("response가 반환된다") {
-                val response = Gson().fromJson(result.andReturn().response.contentAsString, BoardWriteResponse::class.java)
-                response.title shouldBe boardWriteRequest.title
-                response.httpStatus shouldBe HttpStatus.OK
+                Then("response가 반환된다") {
+                    val response = Gson().fromJson(result.andReturn().response.contentAsString, BoardWriteResponse::class.java)
+                    response.title shouldBe boardWriteRequest.title
+                    response.httpStatus shouldBe HttpStatus.OK
+                }
             }
         }
     }
-    TODO("BoardEditRequest 유효성 검사 테스트")
-    TODO("BoardWriteRequest 파일 업로드 테스트")
-})
+}
+//    BehaviorSpec({
+//
+//    afterSpec {
+//        clearAllMocks()
+//    }
+//
+//    Given("boardController가 존재한다.") {
+//        every { boardService.writeBoard(any()) } returns BoardWriteResponse("title", HttpStatus.OK, LocalDateTime.now())
+//        When("{/api/board/write}로 POST요청을 보낸다") {
+//            Then("boardService가 saveBoard()를 호출한다") {
+//                verify(exactly = 1) { boardService.writeBoard(any()) }
+//            }
+//
+//            val boardWriteRequest = BoardWriteRequest("title", "content", listOf())
+//            val result = mockMvc.post("/api/board/write") {
+//                content = boardWriteRequest
+//            }
+//            Then("response가 반환된다") {
+//                val response = Gson().fromJson(result.andReturn().response.contentAsString, BoardWriteResponse::class.java)
+//                response.title shouldBe boardWriteRequest.title
+//                response.httpStatus shouldBe HttpStatus.OK
+//            }
+//        }
+//    }
+//})
