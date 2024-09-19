@@ -24,8 +24,9 @@ class BoardServiceImpl @Autowired constructor(
         request: BoardWriteRequest
     ): BoardWriteResponse {
         val board: Board = Board.of(request)
+        val result: Board = boardRepository.save(board)
         fileUploadService.saveFile(request.files, board)
-        return BoardWriteResponse.from(boardRepository.save(board))
+        return BoardWriteResponse.from(result)
     }
 
     override fun editBoard(

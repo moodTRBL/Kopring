@@ -11,12 +11,11 @@ class BoardWriteResponse(
     val time: LocalDateTime
 ) {
     companion object {
-        fun from(entity: Board): BoardWriteResponse {
-            return BoardWriteResponse(
+        fun from(entity: Board): BoardWriteResponse =
+            BoardWriteResponse(
                 title = entity.title,
                 httpStatus = HttpStatus.OK,
                 time = LocalDateTime.now()
             )
-        }
     }
 }

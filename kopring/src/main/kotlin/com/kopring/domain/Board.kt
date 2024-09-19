@@ -22,11 +22,10 @@ class Board(
     var boardImages: MutableList<BoardImage> = mutableListOf()
 
     companion object {
-        fun of(request: BoardWriteRequest): Board {
-            return Board(
+        fun of(request: BoardWriteRequest): Board =
+            Board(
                 title = request.title,
                 content = request.content
             )
-        }
     }
 }
