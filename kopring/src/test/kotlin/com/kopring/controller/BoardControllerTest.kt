@@ -48,7 +48,7 @@ class BoardControllerTest(
     }
 
     Given("boardController가 존재한다.") {
-        //every { boardService.writeBoard(any()) } returns BoardWriteResponse("title", HttpStatus.OK, LocalDateTime.now())
+        every { boardService.writeBoard(any()) } returns BoardWriteResponse("title", HttpStatus.OK, LocalDateTime.now())
         When("{/api/board/write}로 POST요청을 보낸다") {
             val imageFiles = listOf(
                 MockMultipartFile("file1", "test1.txt", "text/plain", "test1".byteInputStream(StandardCharsets.UTF_8)),
@@ -62,9 +62,9 @@ class BoardControllerTest(
                 file("image1", imageFiles[0].bytes)
                 file("image2", imageFiles[1].bytes)
             }
-//            Then("boardService가 saveBoard()를 호출한다") {
-//                verify(exactly = 1) { boardService.writeBoard(any()) }
-//            }
+            Then("boardService가 saveBoard()를 호출한다") {
+                verify(exactly = 1) { boardService.writeBoard(any()) }
+            }
 
             Then("response가 반환된다") {
                 val response = Gson().fromJson(result.andReturn().response.contentAsString, BoardWriteResponse::class.java)
@@ -73,16 +73,16 @@ class BoardControllerTest(
             }
         }
 
-        //every { boardService.editBoard(any()) } returns BoardEditResponse("title", HttpStatus.OK, LocalDateTime.now())
+        every { boardService.editBoard(any()) } returns BoardEditResponse("title", HttpStatus.OK, LocalDateTime.now())
         When("{/api/board/edit}로 PUT요청을 보낸다") {
             val boardEditRequest = BoardEditRequest(1, "title", "content")
             val result = mockMvc.put("/api/board/edit/1") {
                 content = boardEditRequest
                 contentType = MediaType.APPLICATION_JSON
             }
-//            Then("boardService가 saveBoard()를 호출한다") {
-//                verify(exactly = 1) { boardService.editBoard(any()) }
-//            }
+            Then("boardService가 saveBoard()를 호출한다") {
+                verify(exactly = 1) { boardService.editBoard(any()) }
+            }
             Then("response가 반환된다") {
                 val response = Gson().fromJson(result.andReturn().response.contentAsString, BoardEditResponse::class.java)
                 response.title shouldBe boardEditRequest.title
