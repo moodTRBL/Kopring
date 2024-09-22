@@ -55,6 +55,7 @@ dependencies {
 
 	//mokK
 	testImplementation("io.mockk:mockk:1.13.8")
+	testImplementation("com.ninja-squad:springmockk:3.1.1")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
 	// webMvcTest
