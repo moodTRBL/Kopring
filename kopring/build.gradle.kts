@@ -45,6 +45,9 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 
+	//jsoup
+	implementation("org.jsoup:jsoup:1.15.3")
+
 	//kotest
 	testImplementation("io.kotest:kotest-runner-junit5:5.4.2")
 	testImplementation("io.kotest:kotest-assertions-core:5.4.2")
@@ -59,9 +62,9 @@ dependencies {
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
 	// webMvcTest
-	testImplementation("org.springframework.boot:spring-boot-starter-test") {
-		exclude(module = "mockito-core")
-	}
+//	testImplementation("org.springframework.boot:spring-boot-starter-test") {
+//		exclude(module = "mockk-core")
+//	}
 	testImplementation("org.junit.jupiter:junit-jupiter-api")
 	testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 	testImplementation("com.ninja-squad:springmockk:4.0.2")
@@ -85,8 +88,10 @@ tasks.withType<Test> {
 
 tasks.getByName<BootJar>("bootJar") {
 	enabled = false
+	archiveFileName = "app.jar"
 }
 
 tasks.getByName<Jar>("jar") {
 	enabled = true
+	manifest.attributes["Main-Class"] = "com.kopring.KotlinApplication"
 }

@@ -1,5 +1,6 @@
 package com.kopring.controller
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.kopring.dto.request.BoardWriteRequest
 import com.kopring.dto.response.BoardWriteResponse
 import com.kopring.service.BoardService
@@ -10,6 +11,7 @@ import io.mockk.impl.recording.WasNotCalled.method
 import io.mockk.verify
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext
@@ -24,11 +26,16 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.nio.charset.StandardCharsets
 import java.time.LocalDateTime
 
-@SpringBootTest
-@AutoConfigureMockMvc
+//@SpringBootTest
+//@AutoConfigureMockMvc
+@WebMvcTest
+@MockBean(JpaMetamodelMappingContext::class)
 class BoardControllerTest3(
     @Autowired
     private val mockMvc: MockMvc,
+
+    @Autowired
+    private val objectMapper: ObjectMapper,
 
     @MockkBean
     private val boardService: BoardService
@@ -36,20 +43,18 @@ class BoardControllerTest3(
     describe("Board Controller가 존재한다") {
         val boardWriteResponse = BoardWriteResponse("title", HttpStatus.OK, LocalDateTime.now())
         val imageFiles = listOf(
-            MockMultipartFile("file1", "test1.txt", "text/plain", "test1".byteInputStream(StandardCharsets.UTF_8)),
-            MockMultipartFile("file2", "test2.txt", "text/plain", "test2".byteInputStream(StandardCharsets.UTF_8)),
+            MockMultipartFile("files", "test1.txt", "text/plain", "test1".toByteArray()),
+            MockMultipartFile("files", "test2.txt", "text/plain", "test2".toByteArray()),
         )
-        every { boardService.writeBoard(any()) } returns boardWriteResponse
-        val boardWriteRequest = BoardWriteRequest("title", "content", imageFiles)
-        val result = mockMvc.perform(
-            MockMvcRequestBuilders.multipart(HttpMethod.POST, "/api/board/write")
-                .file("file1", imageFiles[0].bytes)
-                .file("file2", imageFiles[1].bytes)
-                .param("title", "title")
-                .param("content", "content")
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.MULTIPART_FORM_DATA)
-        ).andExpect(status().isOk)
-        verify(exactly = 1) { boardService.writeBoard(any()) }
+        every { boardService.writeBoard(any(), any()) } returns boardWriteResponse
+        val boardWriteRequest = BoardWriteRequest("title", "content")
+        val content = objectMapper.writeValueAsString(boardWriteRequest)
+        val request = MockMultipartFile("request", "request.json", "application/json", content.toByteArray(StandardCharsets.UTF_8))
+        mockMvc.multipart(HttpMethod.POST, "/api/board/write") {
+            file(request)
+            file(imageFiles[0])
+            file(imageFiles[1])
+        }.andExpect { status { isOk() } }
+        verify(exactly = 1) { boardService.writeBoard(any(),any()) }
     }
 })

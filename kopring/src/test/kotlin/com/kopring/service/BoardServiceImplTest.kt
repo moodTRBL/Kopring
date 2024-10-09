@@ -32,8 +32,8 @@ class BoardServiceImplTest : BehaviorSpec({
         every { boardRepository.save(any()) } returns Board("title", "content")
         every { fileUploadService.saveFile(any(),any()) } returns Unit
         When("write를 호출한다") {
-            val request = BoardWriteRequest(title = "title", content = "content", listOf())
-            val result: BoardWriteResponse = boardService.writeBoard(request)
+            val request = BoardWriteRequest(title = "title", content = "content")
+            val result: BoardWriteResponse = boardService.writeBoard(request, listOf())
             Then("boardRepository가 save()를 호출한다") {
                 verify(exactly = 1) { boardRepository.save(any()) }
             }

@@ -8,8 +8,6 @@
 //import com.ninjasquad.springmockk.MockkBean
 //import io.kotest.core.spec.style.AnnotationSpec
 //import io.mockk.*
-//import io.mockk.junit5.MockKExtension
-//import org.junit.jupiter.api.extension.ExtendWith
 //import org.mockito.MockitoAnnotations
 //import org.springframework.beans.factory.annotation.Autowired
 //import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -19,7 +17,6 @@
 //import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext
 //import org.springframework.http.HttpStatus
 //import org.springframework.mock.web.MockMultipartFile
-//import org.springframework.test.context.junit.jupiter.SpringExtension
 //import org.springframework.test.web.servlet.MockMvc
 //import org.springframework.test.web.servlet.multipart
 //import org.springframework.test.web.servlet.result.MockMvcResultMatchers
@@ -29,11 +26,9 @@
 ////@SpringBootTest
 ////@AutoConfigureMockMvc
 //@WebMvcTest(BoardController::class)
-//@ExtendWith(SpringExtension::class)
 ////@MockBean(JpaMetamodelMappingContext::class)
 //class BoardControllerTest2 : AnnotationSpec() {
-//
-//    @MockkBean
+//    @MockBean
 //    private lateinit var boardService: BoardService
 //
 //    @Autowired

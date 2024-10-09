@@ -21,11 +21,12 @@ class BoardServiceImpl @Autowired constructor(
 ) : BoardService {
 
     override fun writeBoard(
-        request: BoardWriteRequest
+        request: BoardWriteRequest,
+        files: List<MultipartFile>
     ): BoardWriteResponse {
         val board: Board = Board.of(request)
         val result: Board = boardRepository.save(board)
-        fileUploadService.saveFile(request.files, board)
+        fileUploadService.saveFile(files, board)
         return BoardWriteResponse.from(result)
     }
 

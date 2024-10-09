@@ -26,9 +26,10 @@ class BoardController @Autowired constructor(
 ) {
     @PostMapping("/write")
     fun writeBoard(
-        @ModelAttribute reqeuest: BoardWriteRequest
+        @RequestPart request: BoardWriteRequest,
+        @RequestPart files: List<MultipartFile>
     ): ResponseEntity<BoardWriteResponse> {
-        val response = boardService.writeBoard(reqeuest)
+        val response = boardService.writeBoard(request, files)
         return ResponseEntity.ok(response)
     }
 
